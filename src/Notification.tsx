@@ -1,6 +1,5 @@
 import * as React from 'react';
-import Notification from 'rc-notification';
-import '../styles/Notification.scss';
+import Notification, { NotificationInstance } from 'rc-notification';
 
 const defaultCls = 'my-notification';
 
@@ -23,7 +22,7 @@ interface Instance {
 }
 
 const getInstance = (function() {
-  let instances: { [k in Position]?: Instance } = {};
+  let instances: { [k in Position]?: NotificationInstance } = {};
   return (placement: Position) => {
     if (!instances[placement]) {
       Notification.newInstance(
@@ -32,7 +31,7 @@ const getInstance = (function() {
           className: placement,
           style: {}
         },
-        notification => {
+        (notification: NotificationInstance) => {
           instances[placement] = notification;
         }
       );

@@ -31,7 +31,7 @@
     "tslint": "^5.7.0",
     "tslint-loader": "^3.5.3",
     "tslint-react": "^3.2.0",
-    "typescript": "~2.5.3",
+    "typescript": "^2.6.2",
     "url-loader": "0.5.9",
     "webpack": "3.5.1",
     "webpack-dev-server": "2.7.1",
@@ -51,8 +51,12 @@
   },
   "jest": {
     "mapCoverage": true,
-    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
-    "setupFiles": ["<rootDir>/config/polyfills.js"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}"
+    ],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"
@@ -84,13 +88,14 @@
     ],
     "globals": {
       "ts-jest": {
-        "tsConfigFile":
-          "/Users/steven/MyProjects/Github/react-bulma-notification/tsconfig.test.json"
+        "tsConfigFile": "/Users/steven/MyProjects/Github/react-bulma-notification/tsconfig.test.json"
       }
     }
   },
   "babel": {
-    "presets": ["react-app"]
+    "presets": [
+      "react-app"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
