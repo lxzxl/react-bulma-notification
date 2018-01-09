@@ -1,13 +1,15 @@
 declare module 'rc-notification' {
   import { Component, Ref } from 'react';
 
-  interface NoticeProps {
-    duration?: number;
-    onClose?(): void;
-    children?: any;
-    className?: string;
-    prefixCls?: string;
+  export type Position = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+
+  export interface NoticeProps {
+    key: string | number;
+    content: string | JSX.Element;
     closable?: boolean;
+    onClose?(): void;
+    duration?: number;
+    style?: object;
   }
 
   class Notice extends Component<NoticeProps> {
