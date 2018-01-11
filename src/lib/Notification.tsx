@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './index.less';
+import './style.less';
 import Notification, {
   NoticeProps,
   NotificationInstance,
@@ -45,7 +45,7 @@ const defaultPosition: Position = 'topRight';
 const defaultOptions: Partial<Options> = {
   position: defaultPosition,
   theme: '',
-  closable: false,
+  closable: true,
   duration: 0,
   style: {}
 };
@@ -59,14 +59,16 @@ function notice(content: Content, options: Partial<Options>) {
       key,
       content: (
         <div className={`notification ${opt.theme}`}>
-          <button
-            className="delete"
-            onClick={e => notification.removeNotice(key)}
-          />
+          {opt.closable ? (
+            <button
+              className="delete"
+              onClick={e => notification.removeNotice(key)}
+            />
+          ) : null}
           {content}
         </div>
       ),
-      closable: opt.closable,
+      closable: false,
       duration: opt.duration,
       style: opt.style
     };
@@ -75,16 +77,16 @@ function notice(content: Content, options: Partial<Options>) {
 }
 
 export default {
-  info(content: Content) {
-    notice(content, { theme: 'is-info' });
+  info(content: Content, position?: Position) {
+    notice(content, { theme: 'is-info', position });
   },
-  success(content: Content) {
-    notice(content, { theme: 'is-success' });
+  success(content: Content, position?: Position) {
+    notice(content, { theme: 'is-success', position });
   },
-  warn(content: Content) {
-    notice(content, { theme: 'is-warning' });
+  warn(content: Content, position?: Position) {
+    notice(content, { theme: 'is-warning', position });
   },
-  error(content: Content) {
-    notice(content, { theme: 'is-danger' });
+  error(content: Content, position?: Position) {
+    notice(content, { theme: 'is-danger', position });
   }
 };

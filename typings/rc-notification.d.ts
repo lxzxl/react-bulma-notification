@@ -7,7 +7,7 @@ declare module 'rc-notification' {
     key: string | number;
     content: string | JSX.Element;
     closable?: boolean;
-    onClose?(): void;
+    onClose?: React.MouseEventHandler<HTMLLinkElement>;
     duration?: number;
     style?: object;
   }

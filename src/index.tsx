@@ -17,7 +17,13 @@ class App extends React.Component {
   }
 
   onClick = (type: 'info' | 'success' | 'warn' | 'error') => {
-    Notification[type](<strong>Test content!</strong>);
+    Notification[type](
+      `Primar lorem ipsum dolor sit amet, consectetur adipiscing 
+      elit lorem ipsum dolor. Pellentesque risus mi, tempus quis 
+      placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit 
+      amet fringilla. Nullam gravida purus diam, et dictum`,
+      'bottomRight'
+    );
   };
 }
 
