@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import './style.less';
 import Notification, {
   NoticeProps,
   NotificationInstance,
-  Position
+  Placement
 } from 'rc-notification';
 
 const defaultCls = 'bulma-notification';
@@ -11,16 +11,16 @@ type Content = NoticeProps['content'];
 
 interface Options extends NoticeProps {
   theme: string;
-  position?: Position;
+  placement?: Placement;
   children?: string | JSX.Element;
   className?: string;
   prefixCls?: string;
 }
 
 const getInstance = (function() {
-  let instances: { [k in Position]?: NotificationInstance } = {};
+  let instances: { [k in Placement]?: NotificationInstance } = {};
   return (
-    placement: Position,
+    placement: Placement = defaultPlacement,
     callback: (instance: NotificationInstance) => void
   ) => {
     if (instances[placement]) {
@@ -40,10 +40,10 @@ const getInstance = (function() {
   };
 })();
 
-const defaultPosition: Position = 'topRight';
+const defaultPlacement: Placement = 'topRight';
 
 const defaultOptions: Partial<Options> = {
-  position: defaultPosition,
+  placement: defaultPlacement,
   theme: '',
   closable: true,
   duration: 0,
@@ -52,8 +52,7 @@ const defaultOptions: Partial<Options> = {
 
 function notice(content: Content, options: Partial<Options>) {
   const opt: Partial<Options> = Object.assign({}, defaultOptions, options);
-  const placement = opt.position || defaultPosition;
-  return getInstance(placement, (notification: NotificationInstance) => {
+  return getInstance(opt.placement, (notification: NotificationInstance) => {
     const key = Date.now().toString();
     const props: NoticeProps = {
       key,
@@ -77,16 +76,19 @@ function notice(content: Content, options: Partial<Options>) {
 }
 
 export default {
-  info(content: Content, position?: Position) {
-    notice(content, { theme: 'is-info', position });
+  notice(placement?: Placement) {
+    return false;
   },
-  success(content: Content, position?: Position) {
-    notice(content, { theme: 'is-success', position });
+  info(content: Content, placement?: Placement) {
+    notice(content, { theme: 'is-info', placement });
   },
-  warn(content: Content, position?: Position) {
-    notice(content, { theme: 'is-warning', position });
+  success(content: Content, placement?: Placement) {
+    notice(content, { theme: 'is-success', placement });
   },
-  error(content: Content, position?: Position) {
-    notice(content, { theme: 'is-danger', position });
+  warn(content: Content, placement?: Placement) {
+    notice(content, { theme: 'is-warning', placement });
+  },
+  error(content: Content, placement?: Placement) {
+    notice(content, { theme: 'is-danger', placement });
   }
 };

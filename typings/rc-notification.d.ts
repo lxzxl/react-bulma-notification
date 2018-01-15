@@ -1,11 +1,11 @@
 declare module 'rc-notification' {
-  import { Component, Ref } from 'react';
+  import { Component, Ref, ReactNode } from 'react';
 
-  export type Position = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+  export type Placement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 
   export interface NoticeProps {
     key: string | number;
-    content: string | JSX.Element;
+    content: string | ReactNode;
     closable?: boolean;
     onClose?: React.MouseEventHandler<HTMLLinkElement>;
     duration?: number;
