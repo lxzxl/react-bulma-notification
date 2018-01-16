@@ -1,8 +1,6 @@
 declare module 'rc-notification' {
   import { Component, Ref, ReactNode } from 'react';
 
-  export type Placement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
-
   export interface NoticeProps {
     key?: string | number;
     content: string | ReactNode;

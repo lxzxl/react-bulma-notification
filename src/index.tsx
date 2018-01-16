@@ -2,11 +2,10 @@ import React, { Component, PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import 'bulma/css/bulma.css';
 import registerServiceWorker from './registerServiceWorker';
-import Notification from './lib';
+import Notification, { Placement } from './lib';
 import './style.less';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
-import { Placement } from 'rc-notification';
 
 hljs.configure({ languages: ['html'] });
 
@@ -113,7 +112,10 @@ onClick = (placement) => {
         >
           Bottom Right
         </a>
-        <a className="button is-primary" onClick={() => this.onClick('topLeft')}>
+        <a
+          className="button is-primary"
+          onClick={() => this.onClick('topLeft')}
+        >
           Top Left
         </a>
         <a
