@@ -2,35 +2,50 @@ import React from 'react';
 import './style.less';
 import Notification, {
   NoticeProps,
-  NotificationInstance,
-  Placement
+  NotificationInstance
 } from 'rc-notification';
 
 const defaultCls = 'bulma-notification';
 type Content = NoticeProps['content'];
+export type Placement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+type Theme = 'is-primary' | 'is-info' | 'is-success' | 'is-warning' | 'is-danger';
 
-interface Options extends NoticeProps {
-  theme: string;
+interface Options
+  extends Pick<
+      NoticeProps,
+      'key' | 'closable' | 'onClose' | 'duration' | 'style'
+    > {
+  theme?: Theme;
   placement?: Placement;
-  children?: string | JSX.Element;
-  className?: string;
   prefixCls?: string;
 }
 
+const defaultPlacement: Placement = 'topRight';
+const defaultOptions: Options = {
+  placement: defaultPlacement,
+  theme: 'is-primary',
+  closable: true,
+  style: {}
+};
 const getInstance = (function() {
   let instances: { [k in Placement]?: NotificationInstance } = {};
   return (
-    placement: Placement = defaultPlacement,
+    options: Options,
     callback: (instance: NotificationInstance) => void
   ) => {
+    const {
+      placement = defaultPlacement,
+      prefixCls = defaultCls,
+      style
+    } = options;
     if (instances[placement]) {
       return callback(instances[placement] as NotificationInstance);
     }
     return Notification.newInstance(
       {
-        prefixCls: defaultCls,
-        className: placement,
-        style: {}
+        prefixCls,
+        style,
+        className: placement
       },
       (notification: NotificationInstance) => {
         instances[placement] = notification;
@@ -40,29 +55,21 @@ const getInstance = (function() {
   };
 })();
 
-const defaultPlacement: Placement = 'topRight';
-
-const defaultOptions: Partial<Options> = {
-  placement: defaultPlacement,
-  theme: '',
-  closable: true,
-  duration: 0,
-  style: {}
-};
-
-function notice(content: Content, options: Partial<Options>) {
+function notice(content: Content, options?: Options) {
   const opt: Partial<Options> = Object.assign({}, defaultOptions, options);
-  return getInstance(opt.placement, (notification: NotificationInstance) => {
+  return getInstance(opt, (notification: NotificationInstance) => {
     const key = Date.now().toString();
+    const onClose = () => {
+      notification.removeNotice(key);
+      return opt.onClose && opt.onClose();
+    };
     const props: NoticeProps = {
       key,
+      onClose,
       content: (
         <div className={`notification ${opt.theme}`}>
           {opt.closable ? (
-            <button
-              className="delete"
-              onClick={e => notification.removeNotice(key)}
-            />
+            <button className="delete" onClick={e => onClose()} />
           ) : null}
           {content}
         </div>
@@ -75,20 +82,25 @@ function notice(content: Content, options: Partial<Options>) {
   });
 }
 
+type Diff<T extends string, U extends string> = ({ [P in T]: P } &
+  { [P in U]: never } & { [x: string]: never })[T];
+type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
+type HandlerOptions = Omit<Options, 'theme'>;
+
 export default {
-  notice(placement?: Placement) {
-    return false;
+  notice(content: Content, options?: Options) {
+    return notice(content, options);
   },
-  info(content: Content, placement?: Placement) {
-    notice(content, { theme: 'is-info', placement });
+  info(content: Content, options?: HandlerOptions) {
+    notice(content, { theme: 'is-info', ...options });
   },
-  success(content: Content, placement?: Placement) {
-    notice(content, { theme: 'is-success', placement });
+  success(content: Content, options?: HandlerOptions) {
+    notice(content, { theme: 'is-success', ...options });
   },
-  warn(content: Content, placement?: Placement) {
-    notice(content, { theme: 'is-warning', placement });
+  warn(content: Content, options?: HandlerOptions) {
+    notice(content, { theme: 'is-warning', ...options });
   },
-  error(content: Content, placement?: Placement) {
-    notice(content, { theme: 'is-danger', placement });
+  error(content: Content, options?: HandlerOptions) {
+    notice(content, { theme: 'is-danger', ...options });
   }
 };

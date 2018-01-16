@@ -18,7 +18,7 @@ interface Props {
 class Snippet extends PureComponent<Props> {
   private code: HTMLElement;
   componentDidMount() {
-    hljs.highlightBlock(this.code);
+    return this.code && hljs.highlightBlock(this.code);
   }
   render() {
     return (
@@ -50,9 +50,9 @@ class Colors extends PureComponent {
 
 onClick = (type) => {
   Notification[type](
-    \`Primar lorem ipsum dolor sit amet, consectetur adipiscing 
+    <strong>Primar lorem ipsum dolor sit amet, consectetur adipiscing 
     elit lorem ipsum dolor. Pellentesque risus mi, tempus quis 
-    placerat ut, porta nec nulla.\`
+    placerat ut, porta nec nulla.</strong>
   );
 };`;
     return (
@@ -78,22 +78,24 @@ onClick = (type) => {
 
   onClick = (type: 'info' | 'success' | 'warn' | 'error') => {
     Notification[type](
-      `Primar lorem ipsum dolor sit amet, consectetur adipiscing 
-      elit lorem ipsum dolor. Pellentesque risus mi, tempus quis 
-      placerat ut, porta nec nulla.`
+      <strong>
+        Primar lorem ipsum dolor sit amet, consectetur adipiscing elit lorem
+        ipsum dolor. Pellentesque risus mi, tempus quis placerat ut, porta nec
+        nulla.
+      </strong>
     );
   };
 }
 
 class Placements extends PureComponent {
   render() {
-    const code = `<a className="button is-info" onClick={() => this.onClick()}>Top Right(Default)</a>
-<a className="button is-info" onClick={() => this.onClick('bottomRight')}>Bottom Right</a>
-<a className="button is-info" onClick={() => this.onClick('topLeft')}>Top Left</a>
-<a className="button is-info" onClick={() => this.onClick('bottomLeft')}>Bottom Left</a>
+    const code = `<a className="button is-primary" onClick={() => this.onClick()}>Top Right(Default)</a>
+<a className="button is-primary" onClick={() => this.onClick('bottomRight')}>Bottom Right</a>
+<a className="button is-primary" onClick={() => this.onClick('topLeft')}>Top Left</a>
+<a className="button is-primary" onClick={() => this.onClick('bottomLeft')}>Bottom Left</a>
 
 onClick = (placement) => {
-  Notification.info(
+  Notification.notice(
     \`Primar lorem ipsum dolor sit amet, consectetur adipiscing 
     elit lorem ipsum dolor. Pellentesque risus mi, tempus quis 
     placerat ut, porta nec nulla.\`,
@@ -102,20 +104,20 @@ onClick = (placement) => {
 };`;
     return (
       <Snippet name="Placements" code={code}>
-        <a className="button is-info" onClick={() => this.onClick()}>
+        <a className="button is-primary" onClick={() => this.onClick()}>
           Top Right(Default)
         </a>
         <a
-          className="button is-info"
+          className="button is-primary"
           onClick={() => this.onClick('bottomRight')}
         >
           Bottom Right
         </a>
-        <a className="button is-info" onClick={() => this.onClick('topLeft')}>
+        <a className="button is-primary" onClick={() => this.onClick('topLeft')}>
           Top Left
         </a>
         <a
-          className="button is-info"
+          className="button is-primary"
           onClick={() => this.onClick('bottomLeft')}
         >
           Bottom Left
@@ -124,13 +126,134 @@ onClick = (placement) => {
     );
   }
   onClick = (placement?: Placement) => {
-    Notification.info(
+    Notification.notice(
       `Primar lorem ipsum dolor sit amet, consectetur adipiscing 
       elit lorem ipsum dolor. Pellentesque risus mi, tempus quis 
       placerat ut, porta nec nulla.`,
-      placement
+      {
+        placement,
+        duration: 0
+      }
     );
   };
+}
+
+/*
+TODO: add ability to change notification order.
+
+class Order extends PureComponent {
+  private count = 0;
+  render() {
+    const code = `checkbox
+    <a className="button is-danger" onClick={() => this.onClick()}>Top Right(Default)</a>
+
+onClick = (placement) => {
+  Notification.info(
+    \`Primar lorem ipsum dolor sit amet, consectetur adipiscing
+    elit lorem ipsum dolor. Pellentesque risus mi, tempus quis
+    placerat ut, porta nec nulla.\`,
+    placement
+  );
+};`;
+    return (
+      <Snippet name="Order" code={code}>
+        <input
+          type="checkbox"
+          name="changeOrder"
+          onChange={e => this.toggleOrder()}
+        />
+        <a className="button is-danger" onClick={() => this.onClick()}>
+          Click Me
+        </a>
+      </Snippet>
+    );
+  }
+  toggleOrder = () => {
+    Notification.toggleOrder();
+  };
+  onClick = (placement?: Placement) => {
+    Notification.error(`Notification ${++this.count}`, { placement });
+  };
+}
+*/
+
+class Api extends PureComponent {
+  render() {
+    const optionRows = [
+      [
+        'content',
+        'string | ReactNode',
+        '',
+        `The content is the main body that will be inserted into the notification. It can be a string or a ReactNode.`
+      ],
+      [
+        'theme',
+        `is-primary | is-info | is-success | is-warning | is-danger`,
+        'is-primary',
+        `The four most frequently used themes.`
+      ],
+      [
+        'key',
+        'string | number',
+        '',
+        `A identify key of the notification, if not provided, an auto key will be generated.`
+      ],
+      [
+        'placement',
+        `topLeft | topRight | bottomLeft | bottomRight`,
+        `topRight`,
+        `Where to place the notification.`
+      ],
+      [
+        'prefixCls',
+        'string',
+        'bulma-notification',
+        `prefix class name for notification container`
+      ],
+      ['closable', 'boolean', 'true', `Whether to show the close button.`],
+      [
+        'onClose',
+        'function',
+        '() => void',
+        `Function will be called when notification is closed.`
+      ],
+      [
+        'duration',
+        'float',
+        '1.5',
+        `Seconds that the notification will be peristed. 
+ It will be *1000 as millisecond for setTimout. 0 equals no auto close.`
+      ],
+      ['style', 'object', '', `React style object.`]
+    ].map(row => (
+      <tr key={row[0]}>
+        <td>{row[0]}</td>
+        <td>{row[1]}</td>
+        <td>{row[2]}</td>
+        <td>{row[3]}</td>
+      </tr>
+    ));
+    return (
+      <Snippet name="Api">
+        <pre>
+          Notification.notice(content, options?): void;
+          <br />
+          Notification[info|success|warn|error](content, options?): void;
+        </pre>
+        <table className="table is-bordered">
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>type</th>
+              <th>default</th>
+              <th>description</th>
+            </tr>
+          </thead>
+          <tbody>{optionRows}</tbody>
+        </table>
+      </Snippet>
+    );
+  }
 }
 
 class App extends Component {
@@ -139,6 +262,8 @@ class App extends Component {
       <>
         <Colors />
         <Placements />
+        {/* <Order /> */}
+        <Api />
       </>
     );
   }

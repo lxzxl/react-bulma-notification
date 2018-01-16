@@ -4,10 +4,10 @@ declare module 'rc-notification' {
   export type Placement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 
   export interface NoticeProps {
-    key: string | number;
+    key?: string | number;
     content: string | ReactNode;
     closable?: boolean;
-    onClose?: React.MouseEventHandler<HTMLLinkElement>;
+    onClose?(): void;
     duration?: number;
     style?: object;
   }
@@ -20,9 +20,8 @@ declare module 'rc-notification' {
   }
 
   interface Props {
-    className?: string;
     prefixCls?: string;
-    duration?: number;
+    className?: string;
     transitionName?: string;
     animation?: string | object;
     style?: object;
