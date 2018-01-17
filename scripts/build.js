@@ -22,7 +22,6 @@ const config = require('../config/webpack.config.prod');
 const paths = require('../config/paths');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
 
@@ -36,7 +35,7 @@ const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+if (!checkRequiredFiles([paths.appLibIndexJs])) {
   process.exit(1);
 }
 
@@ -47,8 +46,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
     // Remove all content but keep the directory so that
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild);
-    // Merge with the public folder
-    copyPublicFolder();
+
     // Start the webpack build
     return build(previousFileSizes);
   })
@@ -80,18 +78,6 @@ measureFileSizesBeforeBuild(paths.appBuild)
         WARN_AFTER_CHUNK_GZIP_SIZE
       );
       console.log();
-
-      const appPackage = require(paths.appPackageJson);
-      const publicUrl = paths.publicUrl;
-      const publicPath = config.output.publicPath;
-      const buildFolder = path.relative(process.cwd(), paths.appBuild);
-      printHostingInstructions(
-        appPackage,
-        publicUrl,
-        publicPath,
-        buildFolder,
-        useYarn
-      );
     },
     err => {
       console.log(chalk.red('Failed to compile.\n'));
@@ -136,15 +122,8 @@ function build(previousFileSizes) {
       return resolve({
         stats,
         previousFileSizes,
-        warnings: messages.warnings,
+        warnings: messages.warnings
       });
     });
-  });
-}
-
-function copyPublicFolder() {
-  fs.copySync(paths.appPublic, paths.appBuild, {
-    dereference: true,
-    filter: file => file !== paths.appHtml,
   });
 }

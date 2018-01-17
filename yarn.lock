@@ -4375,8 +4375,8 @@ rc-animate@2.x:
     prop-types "15.x"
 
 rc-notification@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/rc-notification/-/rc-notification-3.0.0.tgz#cefbeb8a03052dc5b988a07f9ba31895e886ac2e"
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/rc-notification/-/rc-notification-3.0.1.tgz#9ddcb831895ad40943a7e1df34951aa705173bce"
   dependencies:
     babel-runtime "6.x"
     classnames "2.x"
