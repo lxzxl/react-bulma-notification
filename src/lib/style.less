@@ -48,14 +48,14 @@
         animation-play-state: paused;
     }
     &-fade-enter&-fade-enter-active {
-        animation-name: rcNotificationFadeIn;
+        animation-name: bulmaNotificationFadeIn;
         animation-play-state: running;
     }
     &-fade-leave&-fade-leave-active {
-        animation-name: rcDialogFadeOut;
+        animation-name: bulmaNotificationFadeOut;
         animation-play-state: running;
     }
-    @keyframes rcNotificationFadeIn {
+    @keyframes bulmaNotificationFadeIn {
         0% {
             opacity: 0;
         }
@@ -63,7 +63,7 @@
             opacity: 1;
         }
     }
-    @keyframes rcDialogFadeOut {
+    @keyframes bulmaNotificationFadeOut {
         0% {
             opacity: 1;
         }
