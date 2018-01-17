@@ -20,9 +20,12 @@ class Snippet extends PureComponent<Props> {
     return this.code && hljs.highlightBlock(this.code);
   }
   render() {
+    const { name = '' } = this.props;
     return (
       <>
-        <h2 className="title is-4 is-spaced">{this.props.name}</h2>
+        <h2 id={name.toLowerCase()} className="title is-4 is-spaced">
+          <a href="#{name}"># {name}</a>
+        </h2>
         <div className="snippet">
           <div className="snippet-preview">{this.props.children}</div>
           {this.props.code && (
@@ -230,13 +233,13 @@ class Api extends PureComponent {
     ].map(row => (
       <tr key={row[0]}>
         <td>{row[0]}</td>
-        <td>{row[1]}</td>
+        <td className="code">{row[1]}</td>
         <td>{row[2]}</td>
         <td>{row[3]}</td>
       </tr>
     ));
     return (
-      <Snippet name="Api">
+      <Snippet name="API">
         <pre>
           Notification.notice(content, options?): void;
           <br />
@@ -261,12 +264,12 @@ class Api extends PureComponent {
 class App extends Component {
   render() {
     return (
-      <>
+      <div className="container">
         <Colors />
         <Placements />
         {/* <Order /> */}
         <Api />
-      </>
+      </div>
     );
   }
 }
