@@ -42,7 +42,14 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "doc": "node scripts/doc.js",
+    "test": "node scripts/test.js --env=jsdom",
+    "prepublish": "npm run build -s",
+    "patch": "npm version patch && npm publish",
+    "minor": "npm version minor && npm publish",
+    "major": "npm version major && npm publish",
+    "postpublish": "git push origin master --follow-tags",
+    "toc": "doctoc --github --title \"# Changelog\" CHANGELOG.md"
   },
   "devDependencies": {
     "@types/highlight.js": "^9.12.2",
@@ -55,12 +62,8 @@
   },
   "jest": {
     "mapCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "setupFiles": [
-      "<rootDir>/config/polyfills.js"
-    ],
+    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
+    "setupFiles": ["<rootDir>/config/polyfills.js"],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"
@@ -92,14 +95,13 @@
     ],
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "/Users/steven/MyProjects/Github/react-bulma-notification/tsconfig.test.json"
+        "tsConfigFile":
+          "/Users/steven/MyProjects/Github/react-bulma-notification/tsconfig.test.json"
       }
     }
   },
   "babel": {
-    "presets": [
-      "react-app"
-    ]
+    "presets": ["react-app"]
   },
   "eslintConfig": {
     "extends": "react-app"

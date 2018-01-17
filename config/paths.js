@@ -56,4 +56,5 @@ module.exports = {
 
   appLibIndexJs: resolveApp('src/lib/index.tsx'),
   appLibSrc: resolveApp('src/lib'),
+  appDoc: resolveApp('docs'),
 };
