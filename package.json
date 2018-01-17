@@ -44,7 +44,7 @@
     "build": "node scripts/build.js",
     "doc": "node scripts/doc.js",
     "test": "node scripts/test.js --env=jsdom",
-    "prepublish": "npm run build -s",
+    "prepublish": "yarn build",
     "patch": "npm version patch && npm publish",
     "minor": "npm version minor && npm publish",
     "major": "npm version major && npm publish",
