@@ -1,6 +1,6 @@
 {
   "name": "react-bulma-notification",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "Notification component for react and bulma.",
   "main": "build/index.js",
   "files": [
