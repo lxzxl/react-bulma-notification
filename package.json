@@ -1,7 +1,24 @@
 {
   "name": "react-bulma-notification",
   "version": "0.1.2",
+  "description": "Notification component for react and bulma.",
   "main": "build/index.js",
+  "files": [
+    "src/lib/",
+    "build/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lxzxl/react-bulma-notification.git"
+  },
+  "keywords": [
+    "notification notify bulma react"
+  ],
+  "author": "lxzxl <lixiaozheng1990@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lxzxl/react-bulma-notification/issues"
+  },
   "dependencies": {
     "autoprefixer": "7.1.2",
     "bulma": "^0.6.1",
