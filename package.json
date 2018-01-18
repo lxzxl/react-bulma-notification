@@ -1,6 +1,6 @@
 {
   "name": "react-bulma-notification",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Notification component for react and bulma.",
   "main": "build/index.js",
   "files": [
@@ -64,7 +64,7 @@
     "patch": "yarn publish --new-version patch",
     "minor": "yarn publish --new-version minor",
     "major": "yarn publish --new-version major",
-    "postpublish": "git push origin master --follow-tags",
+    "postpublish": "git describe && git push origin master --follow-tags",
     "toc": "doctoc --github --title \"# Changelog\" CHANGELOG.md"
   },
   "devDependencies": {
