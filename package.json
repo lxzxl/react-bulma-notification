@@ -61,9 +61,9 @@
     "doc": "node scripts/doc.js",
     "test": "node scripts/test.js --env=jsdom",
     "prepublish": "yarn build",
-    "patch": "npm version patch && yarn publish",
-    "minor": "npm version minor && yarn publish",
-    "major": "npm version major && yarn publish",
+    "patch": "yarn publish --new-version patch",
+    "minor": "yarn publish --new-version minor",
+    "major": "yarn publish --new-version major",
     "postpublish": "git push origin master --follow-tags",
     "toc": "doctoc --github --title \"# Changelog\" CHANGELOG.md"
   },
