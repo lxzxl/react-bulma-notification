@@ -1,8 +1,9 @@
 declare module 'rc-notification' {
   import { Component, Ref, ReactNode } from 'react';
 
+  export type Key = string | number;
   export interface NoticeProps {
-    key?: string | number;
+    key?: Key;
     content: string | ReactNode;
     closable?: boolean;
     onClose?(): void;
@@ -35,7 +36,7 @@ declare module 'rc-notification' {
 
   export interface NotificationInstance {
     notice(noticeProps: Props): void;
-    removeNotice(key: string): void;
+    removeNotice(key: Key): void;
     component: Ref<Notification>;
     destroy(): void;
   }
@@ -47,6 +48,6 @@ declare module 'rc-notification' {
     ): void;
     getTransitionName(): void;
     add: (notice: Notice) => void;
-    remove: (key: string) => void;
+    remove: (key: Key) => void;
   }
 }

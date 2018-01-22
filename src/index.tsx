@@ -43,6 +43,51 @@ class Snippet extends PureComponent<Props> {
   }
 }
 
+class Basic extends PureComponent {
+  private count = 0;
+  render() {
+    const code = `<a className="button is-primary" onClick={() => this.open()}>Open</a>
+<a className="button is-primary" onClick={() => this.close()}>Close</a>
+
+open = () => {
+  Notification.notice(\`Notification ${this.count}\`, {
+    key: ++this.count,
+    duration: 0,
+    closable: false,
+  });
+};
+close = () => {
+  if (this.count > 0) {
+    Notification.remove(this.count--);
+  }
+};
+`;
+    return (
+      <Snippet name="Basic" code={code}>
+        <a className="button is-primary" onClick={() => this.open()}>
+          Open
+        </a>
+        <a className="button is-primary" onClick={() => this.close()}>
+          Close Last
+        </a>
+      </Snippet>
+    );
+  }
+
+  open = () => {
+    Notification.notice(`Notification ${this.count}`, {
+      key: ++this.count,
+      duration: 0,
+      closable: false
+    });
+  };
+  close = () => {
+    if (this.count > 0) {
+      Notification.remove(this.count--);
+    }
+  };
+}
+
 class Colors extends PureComponent {
   render() {
     const code = `<a className="button is-info" onClick={() => this.onClick('info')}>Info</a>
@@ -91,46 +136,60 @@ onClick = (type) => {
 
 class Placements extends PureComponent {
   render() {
-    const code = `<a className="button is-primary" onClick={() => this.onClick()}>Top Right(Default)</a>
-<a className="button is-primary" onClick={() => this.onClick('bottomRight')}>Bottom Right</a>
-<a className="button is-primary" onClick={() => this.onClick('topLeft')}>Top Left</a>
-<a className="button is-primary" onClick={() => this.onClick('bottomLeft')}>Bottom Left</a>
+    const code = `<a className="button is-primary" onClick={() => this.open()}>Top Right(Default)</a>
+<a className="button is-primary" onClick={() => this.open('bottomRight')}>Bottom Right</a>
+<a className="button is-primary" onClick={() => this.open('topLeft')}>Top Left</a>
+<a className="button is-primary" onClick={() => this.open('bottomLeft')}>Bottom Left</a>
+<a className="button is-danger" onClick={() => this.closeAll('bottomRight')}>Close Bottom Right</a>
+<a className="button is-danger" onClick={() => this.closeAll()}>Close All</a>
 
-onClick = (placement) => {
+open = (placement?: Placement) => {
   Notification.notice(
     \`Primar lorem ipsum dolor sit amet, consectetur adipiscing 
     elit lorem ipsum dolor. Pellentesque risus mi, tempus quis 
     placerat ut, porta nec nulla.\`,
-    placement
+    {
+      placement,
+      duration: 0
+    }
   );
+};
+closeAll = (placement) => {
+  Notification.remove(undefined, placement);
 };`;
     return (
       <Snippet name="Placements" code={code}>
-        <a className="button is-primary" onClick={() => this.onClick()}>
+        <a className="button is-primary" onClick={() => this.open()}>
           Top Right(Default)
         </a>
         <a
           className="button is-primary"
-          onClick={() => this.onClick('bottomRight')}
+          onClick={() => this.open('bottomRight')}
         >
           Bottom Right
         </a>
-        <a
-          className="button is-primary"
-          onClick={() => this.onClick('topLeft')}
-        >
+        <a className="button is-primary" onClick={() => this.open('topLeft')}>
           Top Left
         </a>
         <a
           className="button is-primary"
-          onClick={() => this.onClick('bottomLeft')}
+          onClick={() => this.open('bottomLeft')}
         >
           Bottom Left
+        </a>
+        <a
+          className="button is-danger"
+          onClick={() => this.closeAll('bottomRight')}
+        >
+          Close Bottom Right
+        </a>
+        <a className="button is-danger" onClick={() => this.closeAll()}>
+          Close All
         </a>
       </Snippet>
     );
   }
-  onClick = (placement?: Placement) => {
+  open = (placement?: Placement) => {
     Notification.notice(
       `Primar lorem ipsum dolor sit amet, consectetur adipiscing 
       elit lorem ipsum dolor. Pellentesque risus mi, tempus quis 
@@ -140,6 +199,9 @@ onClick = (placement) => {
         duration: 0
       }
     );
+  };
+  closeAll = (placement?: Placement) => {
+    Notification.remove(undefined, placement);
   };
 }
 
@@ -244,6 +306,8 @@ class Api extends PureComponent {
           Notification.notice(content, options?): void;
           <br />
           Notification[info|success|warn|error](content, options?): void;
+          <br />
+          Notification.remove(key?, placement?): void;
         </pre>
         <table className="table is-bordered">
           <thead>
@@ -265,6 +329,7 @@ class App extends Component {
   render() {
     return (
       <div className="container">
+        <Basic />
         <Colors />
         <Placements />
         {/* <Order /> */}

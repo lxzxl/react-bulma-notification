@@ -1,6 +1,7 @@
 import React from 'react';
 import './style.less';
 import Notification, {
+  Key,
   NoticeProps,
   NotificationInstance
 } from 'rc-notification';
@@ -8,7 +9,12 @@ import Notification, {
 const defaultCls = 'bulma-notification';
 type Content = NoticeProps['content'];
 export type Placement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
-type Theme = 'is-primary' | 'is-info' | 'is-success' | 'is-warning' | 'is-danger';
+type Theme =
+  | 'is-primary'
+  | 'is-info'
+  | 'is-success'
+  | 'is-warning'
+  | 'is-danger';
 
 interface Options
   extends Pick<
@@ -27,38 +33,43 @@ const defaultOptions: Options = {
   closable: true,
   style: {}
 };
-const getInstance = (function() {
+const AllInstances = (function() {
   let instances: { [k in Placement]?: NotificationInstance } = {};
-  return (
-    options: Options,
-    callback: (instance: NotificationInstance) => void
-  ) => {
-    const {
-      placement = defaultPlacement,
-      prefixCls = defaultCls,
-      style
-    } = options;
-    if (instances[placement]) {
-      return callback(instances[placement] as NotificationInstance);
-    }
-    return Notification.newInstance(
-      {
-        prefixCls,
-        style,
-        className: placement
-      },
-      (notification: NotificationInstance) => {
-        instances[placement] = notification;
-        callback(notification);
+  return {
+    get(options: Options, callback: (instance: NotificationInstance) => void) {
+      const {
+        placement = defaultPlacement,
+        prefixCls = defaultCls,
+        style
+      } = options;
+      if (instances[placement]) {
+        return callback(instances[placement] as NotificationInstance);
       }
-    );
+      return Notification.newInstance(
+        {
+          prefixCls,
+          style,
+          className: placement
+        },
+        (notification: NotificationInstance) => {
+          instances[placement] = notification;
+          callback(notification);
+        }
+      );
+    },
+    getAll() {
+      return instances;
+    },
+    remove(placement: Placement) {
+      delete instances[placement];
+    }
   };
 })();
 
 function notice(content: Content, options?: Options) {
   const opt: Partial<Options> = Object.assign({}, defaultOptions, options);
-  return getInstance(opt, (notification: NotificationInstance) => {
-    const key = Date.now().toString();
+  return AllInstances.get(opt, (notification: NotificationInstance) => {
+    const key = opt.key || Date.now().toString();
     const onClose = () => {
       notification.removeNotice(key);
       return opt.onClose && opt.onClose();
@@ -82,12 +93,33 @@ function notice(content: Content, options?: Options) {
   });
 }
 
+function remove(key?: Key, placement?: Placement) {
+  const allInstances = AllInstances.getAll();
+  function removeByPlacement(p: Placement) {
+    const instance = allInstances[p];
+    if (instance) {
+      if (key) {
+        instance.removeNotice(key);
+      } else {
+        instance.destroy();
+        AllInstances.remove(p); // clear that instance.
+      }
+    }
+  }
+  if (placement) {
+    removeByPlacement(placement);
+  } else {
+    Object.keys(allInstances).forEach(removeByPlacement);
+  }
+}
+
 type Diff<T extends string, U extends string> = ({ [P in T]: P } &
   { [P in U]: never } & { [x: string]: never })[T];
 type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
 type HandlerOptions = Omit<Options, 'theme'>;
 
 export default {
+  remove,
   notice(content: Content, options?: Options) {
     return notice(content, options);
   },
