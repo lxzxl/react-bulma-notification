@@ -47,7 +47,7 @@ class Basic extends PureComponent {
   private count = 0;
   render() {
     const code = `<a className="button is-primary" onClick={() => this.open()}>Open</a>
-<a className="button is-primary" onClick={() => this.close()}>Close</a>
+<a className="button is-danger" onClick={() => this.close()}>Close</a>
 
 open = () => {
   Notification.notice(\`Notification ${this.count}\`, {
@@ -67,7 +67,7 @@ close = () => {
         <a className="button is-primary" onClick={() => this.open()}>
           Open
         </a>
-        <a className="button is-primary" onClick={() => this.close()}>
+        <a className="button is-danger" onClick={() => this.close()}>
           Close Last
         </a>
       </Snippet>
